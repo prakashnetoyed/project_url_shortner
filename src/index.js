@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-mongoose.connect("mongodb+srv://project-Url_Shortener:wdNAJpefoptDXFgu@cluster0.mwgk8.mongodb.net/URL-Shortener", {
+mongoose.connect("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", {              // just for security purpose, i have removed the link
     useNewUrlParser: true
 })
 .then( () => console.log("MongoDb is connected"))
