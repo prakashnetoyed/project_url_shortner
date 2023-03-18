@@ -9,17 +9,20 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-mongoose.connect(process.env.MONGO_URI, {              // just for security purpose, i have removed the link
-    useNewUrlParser: true
-})
-.then( () => console.log("MongoDb is connected"))
-.catch ( err => console.log(err) )
-
-
 app.use('/', route)
 
+async function bootstrap(){
+try{
+   mongoose.set('strictQuery', false)
+await mongoose.connect(process.env.MONGO_URI)
+console.log("MongoDb is connected")
+ app.listen(process.env.PORT , ()=>{
+console.log(`server is running on PORT ${process.env.PORT}`)
+  })
+}catch(error){
+console.log("db error", error.message)
+return res.status(500).json({message:error.message})
+  }
+}
 
-app.listen(process.env.PORT || 3000, function () {
-    console.log('Express app running on port ' + (process.env.PORT || 3000))
-});
+bootstrap().finally()
