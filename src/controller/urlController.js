@@ -4,8 +4,7 @@ const shortid = require("shortid");
 
 const CreateShortUrl = async function (req, res) {
   try {
-    let body = req.body;
-  //  let longUrl = body.longUrl
+    const body = req.body;
 
     if (Object.keys(body).length === 0) {
       return res.status(400).send({ status: false, message: "Please enter the data" });
@@ -16,29 +15,24 @@ const CreateShortUrl = async function (req, res) {
     }
 
     if (!validUrl.isWebUri(body.longUrl)) {
-     // console.log("Looks like not a valid URL");
       return res.status(400).send({ status: false, message: "Looks like not a valid URL" });
     }
 
-    let FindUrl = await urlModel.findOne({ longUrl: body.longUrl }); //.select({ longUrl: 1, shortUrl: 1, urlCode: 1, _id: 0 })
+    const FindUrl = await urlModel.findOne({ longUrl: body.longUrl });
 
     if (FindUrl) {
-    return res.status(400).send({ status: false, message: FindUrl });
+    return res.status(200).send({ status: true, message: FindUrl });
     }
     const urlCode = shortid.generate().toLowerCase();
-
     const baseUrl = process.env.baseUrl;
-    console.log("hi there----", baseUrl)
-    return
-    let shortUrl = baseUrl + "/" + urlCode;
-
+    const shortUrl = baseUrl + "/" + urlCode;
     // url = { longUrl, shortUrl, urlCode }
     body.shortUrl = shortUrl;
     body.urlCode = urlCode;
 
     await urlModel.create(body);
 
-    let ShowUrl = await urlModel.findOne({ longUrl: body.longUrl }).select({ longUrl: 1, shortUrl: 1, urlCode: 1, _id: 0 });
+    const ShowUrl = await urlModel.findOne({ longUrl: body.longUrl })
 
     res.status(201).send({status: true,message: "URL create successfully",data: ShowUrl});
 
@@ -49,8 +43,7 @@ const CreateShortUrl = async function (req, res) {
 
 const GetUrl = async function (req, res) {
   try {
-
-      let getUrl = await urlModel.findOne({ urlCode: req.params.urlCode });
+      const getUrl = await urlModel.findOne({ urlCode: req.params.urlCode });
       if (!getUrl) {
         return res.status(404).send({ status: false, message: "Url-Code not found" });
       }
