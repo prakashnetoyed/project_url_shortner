@@ -2,13 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const route = require('./routes/route.js');
 const { default: mongoose } = require('mongoose');
+const env = require('dotenv').config()
+const process = require('node:process')
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-mongoose.connect("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", {              // just for security purpose, i have removed the link
+mongoose.connect(process.env.MONGO_URI, {              // just for security purpose, i have removed the link
     useNewUrlParser: true
 })
 .then( () => console.log("MongoDb is connected"))
